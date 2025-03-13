@@ -25,14 +25,6 @@ import FirebaseFirestore
                 "timestamp",
                 isGreaterThanOrEqualTo: FirebaseFirestore.Timestamp(date: Date())
             )
-        
-        if !scoop.instance.isEmpty {
-            query = query.whereField(
-                "instance",
-                isEqualTo: scoop.instance
-            )
-        }
-        
         query = query.order(
             by: "timestamp",
             descending: true
@@ -62,6 +54,11 @@ import FirebaseFirestore
                     from: document,
                     withId: document.documentID
                 )
+                
+                
+                if scoop.instance.isEmpty || scoop.instance != boop.instance {
+                    return
+                }
                 boops.insert(boop, at: 0)
             }
         }
