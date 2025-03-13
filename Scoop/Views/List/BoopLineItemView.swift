@@ -7,7 +7,7 @@ struct BoopLineItemView: View {
     
     var body: some View {
         let value = boop.value
-        let hasChildren = value != nil
+        let hasChildren = value != nil && !(value is NSNull)
         let isOpen = hasChildren && showDetails
         let multiplier: CGFloat = isOpen ? 2.0 : 1
         
