@@ -17,7 +17,9 @@ import FirebaseFirestore
     func listen() {
         removeAll()
         
-        let collectionRef = Firestore.firestore().collection(scoop.collection)
+        let collectionRef = Firestore.firestore().collection(
+            scoop.collectionVariant
+        )
         var query = collectionRef
             .whereField(
                 "timestamp",

@@ -2,12 +2,12 @@ import SwiftUI
 
 struct ScoopView: View {
     var scoop: ScoopModel
-    @State private var listener: FirebaseListener
+    @State private var listener: FirebaseListener = .init(for: .init(collection: ""))
     @State private var isEditorPresented = false
     
-    init(scoop: ScoopModel) {
-        self.scoop = scoop
-        self.listener = .init(for: scoop)
+    private func beginListening() {
+        listener = .init(for: scoop)
+        listener.listen()
     }
     
     var body: some View {
@@ -26,8 +26,13 @@ struct ScoopView: View {
                 }
             }
         }
+        .onChange(of: isEditorPresented) {
+            if !isEditorPresented {
+                beginListening()
+            }
+        }
         .onAppear {
-            listener.listen()
+            beginListening()
         }
     }
 }

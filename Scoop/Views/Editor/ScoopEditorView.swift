@@ -12,6 +12,7 @@ struct ScoopEditorView: View {
     @State var nickName: String = ""
     @State var collectionName: String = ""
     @State var instanceName: String = ""
+    @State var isDevelopment: Bool = false
     
     private func save() {
         if let scoop {
@@ -19,11 +20,13 @@ struct ScoopEditorView: View {
             scoop.nickname = nickName
             scoop.collection = collectionName
             scoop.instance = instanceName
+            scoop.isDevelopment = isDevelopment
         } else {
             // Add
             let newScoop = ScoopModel(collection: collectionName)
             newScoop.collection = collectionName
             newScoop.instance = instanceName
+            newScoop.isDevelopment = isDevelopment
             modelContext.insert(newScoop)
         }
     }
@@ -31,13 +34,20 @@ struct ScoopEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                TextField("Name (optional)", text: $nickName)
-                TextField("Collection", text: $collectionName)
-                    .autocorrectionDisabled(true)
-                    .autocapitalization(.none)
-                TextField("Instance (optional)", text: $instanceName)
-                    .autocorrectionDisabled(true)
-                    .autocapitalization(.none)
+                Section("Basic Information") {
+                    TextField("Collection", text: $collectionName)
+                        .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
+                    TextField("Name (optional)", text: $nickName)
+                }
+                Section("Filters") {
+                    Toggle(isOn: $isDevelopment) {
+                        Text("Development")
+                    }
+                    TextField("Instance", text: $instanceName)
+                        .autocorrectionDisabled(true)
+                        .autocapitalization(.none)
+                }
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -69,6 +79,7 @@ struct ScoopEditorView: View {
                 nickName = scoop.nickname
                 collectionName = scoop.collection
                 instanceName = scoop.instance
+                isDevelopment = scoop.isDevelopment
             }
         }
     }

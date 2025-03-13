@@ -4,6 +4,7 @@ import SwiftData
     var nickname: String = ""
     var collection: String
     var instance: String = ""
+    var isDevelopment: Bool = false
     
     var title: String {
         if !nickname.isEmpty {
@@ -16,6 +17,10 @@ import SwiftData
         }
         _title += " (\(instance))"
         return _title
+    }
+    
+    var collectionVariant: String {
+        return isDevelopment ? "\(collection)-dev" : collection
     }
     
     init(collection: String) {
