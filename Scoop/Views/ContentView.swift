@@ -2,6 +2,7 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @Environment(\.modelContext) private var modelContext
     @Query private var scoops: [ScoopModel]
     @State private var activeScoop: ScoopModel?
     @State private var isEditorPresented = false
@@ -16,6 +17,11 @@ struct ContentView: View {
                 } else {
                     List(scoops, selection: $activeScoop) { scoop in
                         NavigationLink(scoop.title, value: scoop)
+                            .swipeActions(edge: .trailing) {
+                                Button("Delete", role: .destructive) {
+                                    modelContext.delete(scoop)
+                                }
+                            }
                     }
                 }
             }
