@@ -24,7 +24,7 @@ struct ScoopEditorView: View {
         } else {
             // Add
             let newScoop = ScoopModel(collection: collectionName)
-            newScoop.collection = collectionName
+            newScoop.nickname = nickName
             newScoop.instance = instanceName
             newScoop.isDevelopment = isDevelopment
             modelContext.insert(newScoop)
