@@ -1,6 +1,6 @@
 import SwiftData
 
-@Model final class CollectionModel {
+@Model final class ScoopModel {
     var nickname: String = ""
     var collection: String
     var instance: String = ""

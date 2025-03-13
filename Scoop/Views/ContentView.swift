@@ -2,14 +2,14 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Query private var collections: [CollectionModel]
-    @State private var selectedCollection: CollectionModel?
+    @Query private var scoops: [ScoopModel]
+    @State private var activeScoop: ScoopModel?
     @State private var isEditorPresented = false
     
     var body: some View {
         NavigationSplitView {
-            List(collections, selection: $selectedCollection) { collection in
-                NavigationLink(collection.title, value: collection)
+            List(scoops, selection: $activeScoop) { scoop in
+                NavigationLink(scoop.title, value: scoop)
             }
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
@@ -17,14 +17,14 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $isEditorPresented) {
-                CollectionEditorView()
+                ScoopEditorView()
             }
         } detail: {
-            if let selectedCollection {
+            if let activeScoop {
                 NavigationStack {
-                    CollectionView(collection: selectedCollection)
+                    ScoopView(scoop: activeScoop)
                 }
-                .navigationTitle(selectedCollection.title)
+                .navigationTitle(activeScoop.title)
             }
         }
     }

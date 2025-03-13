@@ -1,12 +1,12 @@
 import SwiftUI
 
-struct CollectionEditorView: View {
+struct ScoopEditorView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
     
-    var collection: CollectionModel? = nil
+    var scoop: ScoopModel? = nil
     private var editorTitle: String {
-        collection == nil ? "Add Collection" : "Edit Collection"
+        scoop == nil ? "Add Scoop" : "Edit Scoop"
     }
     
     @State var nickName: String = ""
@@ -14,17 +14,17 @@ struct CollectionEditorView: View {
     @State var instanceName: String = ""
     
     private func save() {
-        if let collection {
+        if let scoop {
             // Edit
-            collection.nickname = nickName
-            collection.collection = collectionName
-            collection.instance = instanceName
+            scoop.nickname = nickName
+            scoop.collection = collectionName
+            scoop.instance = instanceName
         } else {
             // Add
-            let newCollection = CollectionModel(collection: collectionName)
-            newCollection.collection = collectionName
-            newCollection.instance = instanceName
-            modelContext.insert(newCollection)
+            let newScoop = ScoopModel(collection: collectionName)
+            newScoop.collection = collectionName
+            newScoop.instance = instanceName
+            modelContext.insert(newScoop)
         }
     }
     
@@ -65,22 +65,21 @@ struct CollectionEditorView: View {
             }
         }
         .onAppear {
-            if let collection {
-                // Edit the incoming animal.
-                nickName = collection.nickname
-                collectionName = collection.collection
-                instanceName = collection.instance
+            if let scoop {
+                nickName = scoop.nickname
+                collectionName = scoop.collection
+                instanceName = scoop.instance
             }
         }
     }
 }
 
-#Preview("Add a Collection") {
-    CollectionEditorView(collection: nil)
+#Preview("Add a Scoop") {
+    ScoopEditorView(scoop: nil)
         .modelContainer(.preview)
 }
 
-#Preview("Add a Collection") {
-    CollectionEditorView(collection: .init(collection: "my-editor-collection"))
+#Preview("Add a Scoop") {
+    ScoopEditorView(scoop: .init(collection: "my-editor-collection"))
         .modelContainer(.preview)
 }

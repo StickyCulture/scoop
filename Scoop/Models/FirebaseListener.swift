@@ -5,12 +5,12 @@ import OSLog
 import FirebaseFirestore
 
 @Observable class FirebaseListener {
-    var scoop: CollectionModel
+    var scoop: ScoopModel
     var boops: [BoopItem] = []
 
     private var listener: ListenerRegistration?
     
-    init(for scoop: CollectionModel) {
+    init(for scoop: ScoopModel) {
         self.scoop = scoop
     }
     

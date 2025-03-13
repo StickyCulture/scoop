@@ -6,7 +6,7 @@ extension ModelContainer {
         let storageUrl = URL.documentsDirectory.appending(path: "ScoopApp").appending(path: "\(temporaryDatabaseName).sqlite")
         do {
             let config = ModelConfiguration(url: storageUrl)
-            let schema = Schema([CollectionModel.self])
+            let schema = Schema([ScoopModel.self])
             let modelContainer = try ModelContainer(
                 for: schema,
                 migrationPlan: nil,
@@ -16,10 +16,10 @@ extension ModelContainer {
             #if targetEnvironment(simulator)
             Task { @MainActor in
                 // if there are no CollectionModels in the database yet, create them
-                if let existing = try? modelContainer.mainContext.fetch(FetchDescriptor<CollectionModel>()), existing.isEmpty {
-                    let leopardModel = CollectionModel(collection: "leopard-telemetry")
+                if let existing = try? modelContainer.mainContext.fetch(FetchDescriptor<ScoopModel>()), existing.isEmpty {
+                    let leopardModel = ScoopModel(collection: "leopard-telemetry")
                     leopardModel.nickname = "Leopard"
-                    let geckoModel = CollectionModel(collection: "gecko-telemetry")
+                    let geckoModel = ScoopModel(collection: "gecko-telemetry")
                     geckoModel.nickname = "Gecko"
                     geckoModel.instance = "dev"
                     

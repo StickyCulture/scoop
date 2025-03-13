@@ -1,13 +1,13 @@
 import SwiftUI
 
-struct CollectionView: View {
-    var collection: CollectionModel
+struct ScoopView: View {
+    var scoop: ScoopModel
     @State private var listener: FirebaseListener
     @State private var isEditorPresented = false
     
-    init(collection: CollectionModel) {
-        self.collection = collection
-        self.listener = .init(for: collection)
+    init(scoop: ScoopModel) {
+        self.scoop = scoop
+        self.listener = .init(for: scoop)
     }
     
     var body: some View {
@@ -15,11 +15,11 @@ struct CollectionView: View {
             BoopListView(boops: listener.boops)
             .padding()
             .sheet(isPresented: $isEditorPresented) {
-                CollectionEditorView(collection: collection)
+                ScoopEditorView(scoop: scoop)
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(collection.title)
+                    Text(scoop.title)
                 }
                 ToolbarItem(placement: .primaryAction) {
                     ToolbarEditButton(mode: .edit, isActive: $isEditorPresented)
@@ -33,5 +33,5 @@ struct CollectionView: View {
 }
 
 #Preview {
-    CollectionView(collection: .init(collection: "my-custom-collection"))
+    ScoopView(scoop: .init(collection: "my-custom-collection"))
 }
