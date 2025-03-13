@@ -4,18 +4,20 @@ struct BoopListView: View {
     var boops: [BoopItem]
     
     var body: some View {
-        VStack {
-            if boops.isEmpty {
+        if boops.isEmpty {
+            VStack {
                 Spacer()
                 Text("waiting for boops...")
-            } else {
+                Spacer()
+            }
+        } else {
+            ScrollView {
                 LazyVStack(spacing: 30) {
                     ForEach(boops) { boop in
                         BoopLineItemView(boop: boop)
                     }
                 }
             }
-            Spacer()
         }
     }
 }

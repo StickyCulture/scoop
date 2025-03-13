@@ -8,10 +8,22 @@ struct ContentView: View {
     
     var body: some View {
         NavigationSplitView {
-            List(scoops, selection: $activeScoop) { scoop in
-                NavigationLink(scoop.title, value: scoop)
+            VStack {
+                if scoops.isEmpty {
+                    Spacer()
+                    Text("Add a scoop!")
+                    Spacer()
+                } else {
+                    List(scoops, selection: $activeScoop) { scoop in
+                        NavigationLink(scoop.title, value: scoop)
+                    }
+                }
             }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Text("Scoop")
+                        .font(.headline)
+                }
                 ToolbarItem(placement: .primaryAction) {
                     ToolbarEditButton(mode: .add, isActive: $isEditorPresented)
                 }
