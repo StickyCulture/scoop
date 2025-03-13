@@ -12,8 +12,7 @@ struct CollectionView: View {
     
     var body: some View {
         NavigationStack {
-            VStack {
-            }
+            BoopListView(boops: listener.boops)
             .padding()
             .sheet(isPresented: $isEditorPresented) {
                 CollectionEditorView(collection: collection)

@@ -53,12 +53,15 @@ import FirebaseFirestore
             return
         }
         
-        snapshot.documents.forEach { document in
-            let boop = BoopItem(
-                from: document,
-                withId: document.documentID
-            )
-            boops.insert(boop, at: 0)
+        snapshot.documentChanges.forEach { diff in
+            if diff.type == .added {
+                let document = diff.document
+                let boop = BoopItem(
+                    from: document,
+                    withId: document.documentID
+                )
+                boops.insert(boop, at: 0)
+            }
         }
     }
     
