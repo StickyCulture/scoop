@@ -16,7 +16,14 @@ struct ContentView: View {
                     Spacer()
                 } else {
                     List(scoops, selection: $activeScoop) { scoop in
-                        NavigationLink(scoop.title, value: scoop)
+                        NavigationLink(value: scoop) {
+                            HStack {
+                                if scoop.isDevelopment {
+                                    DevChipView()
+                                }
+                                Text(scoop.title)
+                            }
+                        }
                             .swipeActions(edge: .trailing) {
                                 Button("Delete", role: .destructive) {
                                     modelContext.delete(scoop)

@@ -19,7 +19,12 @@ struct ScoopView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    Text(scoop.title)
+                    HStack {
+                        if scoop.isDevelopment {
+                            DevChipView()
+                        }
+                        Text(scoop.title)
+                    }
                 }
                 ToolbarItem(placement: .primaryAction) {
                     ToolbarEditButton(mode: .edit, isActive: $isEditorPresented)
@@ -40,3 +45,4 @@ struct ScoopView: View {
 #Preview {
     ScoopView(scoop: .init(collection: "my-custom-collection"))
 }
+
