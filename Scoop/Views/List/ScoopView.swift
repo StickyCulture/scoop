@@ -31,6 +31,7 @@ struct ScoopView: View {
                 }
             }
         }
+        .navigationTitle(scoop.title)
         .onChange(of: isEditorPresented) {
             if !isEditorPresented {
                 beginListening()
