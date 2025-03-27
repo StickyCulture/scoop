@@ -55,8 +55,8 @@ import FirebaseFirestore
                     withId: document.documentID
                 )
                 
-                
-                if scoop.instance.isEmpty || scoop.instance != boop.instance {
+                // ignore results if the instance filter is set and it doesn't match
+                if !scoop.instance.isEmpty && boop.instance != scoop.instance {
                     return
                 }
                 boops.insert(boop, at: 0)
