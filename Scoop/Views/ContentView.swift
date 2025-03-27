@@ -46,10 +46,7 @@ struct ContentView: View {
             }
         } detail: {
             if let activeScoop {
-                NavigationStack {
-                    ScoopView(scoop: activeScoop)
-                }
-                .navigationTitle(activeScoop.title)
+                ScoopView(scoop: activeScoop)
             }
         }
     }
