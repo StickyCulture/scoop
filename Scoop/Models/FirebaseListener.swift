@@ -8,6 +8,7 @@ import FirebaseFirestore
     var scoop: ScoopModel
     var boops: [BoopItem] = []
     var sessions: [BoopSession] = []
+    var indexUrls: [URL:Bool] = [:]
 
     private var listener: ListenerRegistration?
     
@@ -40,6 +41,7 @@ import FirebaseFirestore
     private func receiveSnapshot(querySnapshot: QuerySnapshot?, error: Error?) {
         if let error = error {
             print("receiveSnapshot: error \(error)")
+            handleIndexError(error)
             return
         }
         
@@ -92,6 +94,7 @@ import FirebaseFirestore
     private func receiveSessionsSnapshot(querySnapshot: QuerySnapshot?, error: Error?) {
         if let error = error {
             print("receiveSnapshot: error \(error.localizedDescription)")
+            handleIndexError(error)
             return
         }
         
@@ -115,6 +118,22 @@ import FirebaseFirestore
                     sessions.append(session)
                 }
             }
+        }
+    }
+    
+    private func handleIndexError(_ error: Error) {
+        guard let firestoreError = error as NSError?,
+              firestoreError.domain == "FIRFirestoreErrorDomain",
+              firestoreError.code == 9,
+              let description = firestoreError.userInfo["NSLocalizedDescription"] as? String,
+              let urlRange = description.range(of: "https://console.firebase.google.com/.*?(?=\\s|$)", options: .regularExpression) else {
+            return
+        }
+        
+        let indexUrl = String(description[urlRange])
+        
+        if let url = URL(string: indexUrl) {
+            indexUrls[url] = true
         }
     }
     
