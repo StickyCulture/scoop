@@ -7,13 +7,17 @@ struct ScoopView: View {
     
     private func beginListening() {
         listener = .init(for: scoop)
+        listener.getSessions()
         listener.listen()
     }
     
     var body: some View {
         NavigationStack {
-            BoopListView(boops: listener.boops)
-            .padding()
+            VStack {
+                SessionChart(data: listener.sessions)
+                BoopListView(boops: listener.boops)
+                    .padding()
+            }
             .sheet(isPresented: $isEditorPresented) {
                 ScoopEditorView(scoop: scoop)
             }
