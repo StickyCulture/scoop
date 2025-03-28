@@ -70,11 +70,15 @@ struct ScoopView: View {
         .navigationTitle(scoop.title)
         .onChange(of: isEditorPresented) {
             if !isEditorPresented {
+                listener.removeAll()
                 beginListening()
             }
         }
         .onAppear {
             beginListening()
+        }
+        .onDisappear {
+            listener.removeAll()
         }
     }
 }

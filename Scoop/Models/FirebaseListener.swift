@@ -17,8 +17,6 @@ import FirebaseFirestore
     }
     
     func listen() {
-        removeAll()
-        
         let collectionRef = Firestore.firestore().collection(
             scoop.collectionVariant
         )
@@ -138,6 +136,7 @@ import FirebaseFirestore
     func removeAll() {
         self.listener?.remove()
         self.boops.removeAll()
+        self.sessions.removeAll()
     }
     
     deinit {
