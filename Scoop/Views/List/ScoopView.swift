@@ -7,13 +7,49 @@ struct ScoopView: View {
     
     private func beginListening() {
         listener = .init(for: scoop)
+        listener.getSessions()
         listener.listen()
+    }
+    
+    private func handleIndexCreation() {
+        guard let url = listener.indexUrls.keys.first else { return }
+        DispatchQueue.main.async {
+            UIApplication.shared.open(url)
+            listener.indexUrls.removeValue(forKey: url)
+        }
     }
     
     var body: some View {
         NavigationStack {
-            BoopListView(boops: listener.boops)
-            .padding()
+            ZStack {
+                VStack {
+                    SessionChart(data: listener.sessions)
+                    BoopListView(boops: listener.boops)
+                        .padding()
+                }
+                if listener.indexUrls.count > 0 {
+                    VStack {
+                        Spacer()
+                        Button(action: handleIndexCreation) {
+                            Label {
+                                VStack(alignment: .leading) {
+                                    Text("\(listener.indexUrls.count) \(listener.indexUrls.count == 1 ? "Index" : "Indices") Required")
+                                        .foregroundColor(.primary)
+                                    Text("Tap to create index in Cloud Firestore console.")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+                            } icon: {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundStyle(.yellow)
+                            }
+                            .padding(10)
+                        }
+                        .buttonStyle(.bordered)
+                        .buttonBorderShape(.capsule)
+                    }
+                }
+            }
             .sheet(isPresented: $isEditorPresented) {
                 ScoopEditorView(scoop: scoop)
             }
@@ -34,11 +70,15 @@ struct ScoopView: View {
         .navigationTitle(scoop.title)
         .onChange(of: isEditorPresented) {
             if !isEditorPresented {
+                listener.removeAll()
                 beginListening()
             }
         }
         .onAppear {
             beginListening()
+        }
+        .onDisappear {
+            listener.removeAll()
         }
     }
 }

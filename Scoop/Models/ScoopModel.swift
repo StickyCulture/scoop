@@ -3,7 +3,7 @@ import SwiftData
 @Model final class ScoopModel {
     var nickname: String = ""
     var collection: String
-    var instance: String = ""
+    var instanceFilter: String = ""
     var isDevelopment: Bool = false
     
     var title: String {
@@ -12,10 +12,10 @@ import SwiftData
         }
         
         var _title = collection
-        if instance.isEmpty || instance == "default" {
+        if instanceFilter.isEmpty || instanceFilter == "default" {
             return _title
         }
-        _title += " (\(instance))"
+        _title += " (\(instanceFilter))"
         return _title
     }
     
