@@ -27,11 +27,12 @@ import FirebaseFirestore
                 "timestamp",
                 isGreaterThanOrEqualTo: FirebaseFirestore.Timestamp(date: Date())
             )
-        query = query.order(
-            by: "timestamp",
-            descending: true
-        )
-        .limit(to: 50)
+        
+        if !scoop.instance.isEmpty {
+            query = query.whereField("instance", isEqualTo: scoop.instance)
+        }
+        
+        query = query.order(by: "timestamp", descending: true)
         
         self.listener = query.addSnapshotListener { (querySnapshot: QuerySnapshot?, error: Error?) in
             self.receiveSnapshot(querySnapshot: querySnapshot, error: error)
@@ -57,11 +58,7 @@ import FirebaseFirestore
                     from: document,
                     withId: document.documentID
                 )
-                
-                // ignore results if the instance filter is set and it doesn't match
-                if !scoop.instance.isEmpty && boop.instance != scoop.instance {
-                    return
-                }
+
                 boops.insert(boop, at: 0)
                 
                 if boop.eventCategory == .sessionStop,
@@ -76,7 +73,7 @@ import FirebaseFirestore
         let collectionRef = Firestore.firestore().collection(
             scoop.collectionVariant
         )
-        let query = collectionRef
+        var query = collectionRef
             .whereField(
                 "timestamp",
                 isGreaterThanOrEqualTo: FirebaseFirestore.Timestamp(date: 24.hoursAgo)
@@ -85,6 +82,12 @@ import FirebaseFirestore
                 "event",
                 isEqualTo: BoopEvent.sessionStop.rawValue
             )
+        
+        if !scoop.instance.isEmpty {
+            query = query.whereField("instance", isEqualTo: scoop.instance)
+        }
+        
+        query = query.order(by: "timestamp", descending: true)
         
         query.getDocuments { (querySnapshot: QuerySnapshot?, error: Error?) in
             self.receiveSessionsSnapshot(querySnapshot: querySnapshot, error: error)
@@ -107,11 +110,6 @@ import FirebaseFirestore
             if diff.type == .added {
                 let document = diff.document
                 let boop = BoopItem(from: document, withId: document.documentID)
-                
-                // ignore results if the instance filter is set and it doesn't match
-                if !scoop.instance.isEmpty && boop.instance != scoop.instance {
-                    return
-                }
                 
                 if boop.eventCategory == .sessionStop,
                    let session = try? BoopSession(from: boop) {
