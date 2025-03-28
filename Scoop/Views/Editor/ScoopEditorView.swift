@@ -19,13 +19,13 @@ struct ScoopEditorView: View {
             // Edit
             scoop.nickname = nickName
             scoop.collection = collectionName
-            scoop.instance = instanceName
+            scoop.instanceFilter = instanceName
             scoop.isDevelopment = isDevelopment
         } else {
             // Add
             let newScoop = ScoopModel(collection: collectionName)
             newScoop.nickname = nickName
-            newScoop.instance = instanceName
+            newScoop.instanceFilter = instanceName
             newScoop.isDevelopment = isDevelopment
             modelContext.insert(newScoop)
         }
@@ -78,7 +78,7 @@ struct ScoopEditorView: View {
             if let scoop {
                 nickName = scoop.nickname
                 collectionName = scoop.collection
-                instanceName = scoop.instance
+                instanceName = scoop.instanceFilter
                 isDevelopment = scoop.isDevelopment
             }
         }

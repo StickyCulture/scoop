@@ -28,8 +28,8 @@ import FirebaseFirestore
                 isGreaterThanOrEqualTo: FirebaseFirestore.Timestamp(date: Date())
             )
         
-        if !scoop.instance.isEmpty {
-            query = query.whereField("instance", isEqualTo: scoop.instance)
+        if !scoop.instanceFilter.isEmpty {
+            query = query.whereField("instance", isEqualTo: scoop.instanceFilter)
         }
         
         query = query.order(by: "timestamp", descending: true)
@@ -83,8 +83,8 @@ import FirebaseFirestore
                 isEqualTo: BoopEvent.sessionStop.rawValue
             )
         
-        if !scoop.instance.isEmpty {
-            query = query.whereField("instance", isEqualTo: scoop.instance)
+        if !scoop.instanceFilter.isEmpty {
+            query = query.whereField("instance", isEqualTo: scoop.instanceFilter)
         }
         
         query = query.order(by: "timestamp", descending: true)
